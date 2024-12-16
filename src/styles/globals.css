@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 0 0% 9%;
+	}
+
+	.dark {
+		--background: 0 0% 4%;
+		--foreground: 0 0% 93%;
+	}
+}
+
+body {
+	@apply bg-background text-foreground;
+}
+
+@layer utilities {
+	.text-balance {
+		text-wrap: balance;
+	}
+}
+
+@keyframes indeterminate {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(400%);
+	}
+}
+
+.indeterminate {
+	width: 30% !important;
+}

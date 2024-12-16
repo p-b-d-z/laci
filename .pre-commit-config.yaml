@@ -1,0 +1,7 @@
+repos:
+    - repo: local
+      hooks:
+          - id: npm-run-fix
+            name: Run npm fix
+            entry: npm run fix
+            language: system

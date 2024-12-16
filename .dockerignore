@@ -1,0 +1,30 @@
+# Ignore the build directory
+.next
+
+# Ignore node modules
+node_modules
+
+# Ignore environment files
+.env
+*.env
+
+# Ignore TypeScript environment file
+next-env.d.ts
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+
+# Ignore logs
+*.log
+
+# Ignore any other files or directories that are not needed in the Docker image
+.git
+.vscode
+.idea
+.DS_Store
+Jenkinsfile
+dist
+build
+coverage
+.pre-commit-config.yaml

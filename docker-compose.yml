@@ -1,0 +1,67 @@
+version: '3.3'
+
+networks:
+    frontend:
+        driver: bridge
+    backend:
+        external: false
+        driver: bridge
+
+services:
+    cloudflared:
+        image: 'cloudflare/cloudflared:latest'
+        command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
+        depends_on:
+            - node
+        env_file:
+            - .env
+        networks:
+            frontend:
+            backend:
+                aliases:
+                    - cloudflared
+        restart: always
+    node:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                local: 'true' # Set to "true" for local development
+        env_file:
+            - .env
+        ports:
+            - '3000:3000'
+        command: npm run dev
+        volumes:
+            - ./src:/app/src
+        networks:
+            backend:
+                aliases:
+                    - node
+        depends_on:
+            - redis
+            - mysql
+
+    redis:
+        image: 'redis:latest'
+        ports:
+            - '6379:6379'
+        networks:
+            backend:
+                aliases:
+                    - redis
+    mysql:
+        image: 'mysql:8.0'
+        ports:
+            - '3306:3306'
+        env_file:
+            - .env
+        networks:
+            backend:
+                aliases:
+                    - mysql
+        volumes:
+            - mysql_data:/var/lib/mysql
+
+volumes:
+    mysql_data:
