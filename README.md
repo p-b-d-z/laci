@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LACI
+LACI is a roles and responsibilities manager. It was designed around Azure Active Directory for use in a corporate environment.
 
-## Getting Started
+LACI stands for:
+- Laborer
+- Accountable
+- Consulted
+- Informed
 
-First, run the development server:
+These fields are configurable within the application.
 
+Responsibilities are also configurable, by default they are:
+- Application
+- Billing
+- Database
+- Infrastructure
+- Licensing
+- Network
+- Operating System
+- Security
+- User Access
+- User Support
+
+Each responsibility has a LACI assignment. These are called LACI entries.
+LACI entries are assigned to applications and services.
+
+# Installation
+Administrators are configured in code by a generic "LACI Administrators" group. Create and assign this in Azure AD.
+
+Approvers can be added within the web application.
+LACI fields and responsibilities can be customized within the web application.
+
+## Azure
+Configure the following environment variables:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+AZURE_AD_TENANT_ID=
+AZURE_AD_CLIENT_ID=
+AZURE_AD_CLIENT_SECRET=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## NextAuth
+Configure the following environment variables:
+```bash
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cloudflare
+This is optional, but I swear by Cloudflare tunnels. The Docker compose will automatically stand up the tunnel.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Docker container uses a backend network for application communication, so you'll access via your Cloudflare domain.
+```bash
+CLOUDFLARE_TOKEN=
+```
 
-## Learn More
+## Redis
+This application uses redis for caching. Configure the following environment variables:
+```bash
+REDIS_HOST=
+REDIS_PORT=
+REDIS_PASSWORD=
+```
 
-To learn more about Next.js, take a look at the following resources:
+## MySQL
+This application uses MySQL as a database. Configure the following environment variables:
+```bash
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+MYSQL_DATABASE=laci_db
+MYSQL_USER=laci_user
+MYSQL_PASSWORD=
+MYSQL_ROOT_PASSWORD=
+```
 
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Install the schema into your database using `src/lib/mysql/schema.sql`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Okta (optional)
+Okta is available for auth only. I may eventually write API calls for user/group lookups to match auth provider, but Azure
+was better for my use case(s).
+```bash
+OKTA_DOMAIN=
+OKTA_CLIENT_ID=
+OKTA_CLIENT_SECRET=
+```
 
-## Deploy on Vercel
+# Development
+Execute `npm run docker` to bring up the development environment in Docker, or run `npm run dev` to start locally.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Use `.env` for environment variables.
