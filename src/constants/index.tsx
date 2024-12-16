@@ -43,7 +43,7 @@ export function removeLineBreaks(str: string): string {
 /* Authentication and Access Control*/
 export const isOktaConfigured = OKTA_DOMAIN !== '' && OKTA_CLIENT_ID !== '' && OKTA_CLIENT_SECRET !== '';
 export const isAzureConfigured = AZURE_AD_CLIENT_ID !== '' && AZURE_AD_TENANT_ID !== '';
-export const ADMIN_GROUPS = ['PXG Leadership', 'sre@pxg.com', 'LACI Administrators'] as string[];
+export const ADMIN_GROUPS = ['LACI Administrators'] as string[];
 
 type RouteAccess = 'admin' | 'authenticated';
 
